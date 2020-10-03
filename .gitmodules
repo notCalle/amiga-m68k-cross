@@ -1,3 +1,6 @@
 [submodule "deps/binutils-gdb"]
 	path = deps/binutils-gdb
 	url = https://sourceware.org/git/binutils-gdb.git
+[submodule "deps/M680x0-mono-repo"]
+	path = deps/M680x0-mono-repo
+	url = https://github.com/M680x0/M680x0-mono-repo.git
