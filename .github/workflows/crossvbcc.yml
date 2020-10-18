@@ -1,0 +1,40 @@
+%YAML 1.1
+---
+name: vbcc-image
+
+on:
+  push:
+    branches:
+      - vbcc
+
+jobs:
+  vbcc:
+    name: VBCC Cross Compiler Tool Chain
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Cache build dependencies
+        uses: actions/cache@v2
+        with:
+          path: container/vbcc/cache
+          key: ${{ runner.os }}-vbcc-${{ hashFiles('**/Makefile') }}
+          restore-keys: |
+            ${{ runner.os }}-vbcc-
+            ${{ runner.os }}-
+
+      - name: Login to GitHub Registry
+        uses: docker/login-action@v1
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+
+      - name: Build container
+        run: make vbcc-xdk-container
+
+      - name: Push container to registry
+        run: make push-vbcc-xdk-container
+...

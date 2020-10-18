@@ -3,14 +3,14 @@ TARGET ?= m68k-amiga-elf
 IMAGE_TAG_PREFIX ?= docker.pkg.github.com/notcalle/amiga-m68k-cross
 
 .PHONY: build
-build: build-binutils build-llvm
+build: build-binutils build-llvm build-vbcc
 
 .PHONY: clean
-clean: clean-binutils clean-llvm
-	rmdir build
+clean: clean-binutils clean-llvm clean-vbcc
+	-rmdir build
 
 .PHONY: install
-install: install-binutils install-ld-hack install-llvm
+install: install-binutils install-ld-hack install-llvm install-vbcc
 
 ##
 ## BINUTILS
@@ -77,6 +77,21 @@ clean-llvm:
 	-rm -rf build/llvm
 
 ##
+## VBCC XDK
+##
+.PHONY: install-vbcc
+install-vbcc:
+	make -C container/vbcc PREFIX=$(PREFIX) install
+
+.PHONY: build-vbcc
+build-vbcc:
+	make -C container/vbcc PREFIX=$(PREFIX) all
+
+.PHONY: clean-vbcc
+clean-vbcc:
+	make -C container/vbcc clean
+
+##
 ## CONTAINERS
 ##
 .PHONY: builder-container
@@ -127,3 +142,15 @@ toolchain-container:
 .PHONY: push-toolchain-container
 push-toolchain-container:
 	docker push $(IMAGE_TAG_PREFIX)/toolchain:latest
+
+.PHONY: vbcc-xdk-container
+vbcc-xdk-container:
+	docker build \
+		--file container/vbcc/Dockerfile \
+		--build-arg IMAGE_TAG_PREFIX=$(IMAGE_TAG_PREFIX) \
+		--tag $(IMAGE_TAG_PREFIX)/vbcc-xdk:latest \
+		container/vbcc
+
+.PHONY: push-vbcc-xdk-container
+push-vbcc-xdk-container:
+	docker push $(IMAGE_TAG_PREFIX)/vbcc-xdk:latest

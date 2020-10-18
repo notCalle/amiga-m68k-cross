@@ -13,6 +13,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         g++ \
         gcc \
         git \
+        lhasa \
         make \
         ninja-build \
         python3 \
