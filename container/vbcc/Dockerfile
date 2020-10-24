@@ -3,10 +3,6 @@ ARG IMAGE_TAG_SUFFIX=latest
 FROM ${IMAGE_TAG_PREFIX}/builder:${IMAGE_TAG_SUFFIX} AS builder
 ARG PREFIX=/opt/amiga
 
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt-get update \
-    && apt-get install -y lhasa rsync curl
-
 ADD . /build
 WORKDIR /build
 

@@ -2,6 +2,7 @@ ARG IMAGE_TAG_PREFIX
 ARG IMAGE_TAG_SUFFIX=latest
 FROM ${IMAGE_TAG_PREFIX}/binutils:${IMAGE_TAG_SUFFIX} AS binutils
 FROM ${IMAGE_TAG_PREFIX}/llvm:${IMAGE_TAG_SUFFIX} AS llvm
+FROM ${IMAGE_TAG_PREFIX}/vbcc-xdk:${IMAGE_TAG_SUFFIX} AS vbcc
 
 FROM ubuntu
 ARG PREFIX=/opt/amiga
@@ -28,12 +29,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 COPY --from=binutils ${PREFIX}/. ${PREFIX}/
 COPY --from=llvm ${PREFIX}/. ${PREFIX}/
+COPY --from=vbcc ${PREFIX}/. ${PREFIX}/
 
 USER amiga
 WORKDIR /opt/amiga
-ENV CC=clang \
-    CXX=clang++ \
-    LD=m68k-amiga-elf-ld \
-    HOME=/opt/amiga \
+ENV HOME=/opt/amiga \
     PATH=/opt/amiga/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     SHELL=/bin/bash

@@ -8,6 +8,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         binutils \
         bison \
         cmake \
+        curl \
         file \
         flex \
         g++ \
@@ -17,6 +18,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         make \
         ninja-build \
         python3 \
+        rsync \
         texinfo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists
