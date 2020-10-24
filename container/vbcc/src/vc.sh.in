@@ -1,0 +1,4 @@
+#!/bin/sh
+export VBCC=__VBCC__
+export PATH=$VBCC/bin:$PATH
+exec $VBCC/bin/vc "$@"

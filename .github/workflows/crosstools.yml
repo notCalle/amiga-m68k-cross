@@ -1,11 +1,11 @@
 %YAML 1.1
 ---
-name: llvm-image
+name: oci-image
 
 on:
   push:
     branches:
-      - main
+      - '*'
 
 jobs:
   changes:
@@ -110,12 +110,45 @@ jobs:
         if: needs.changes.outputs.llvm == 'true'
         run: make push-llvm-container
 
+  vbcc:
+    name: VBCC Cross Compiler Tool Chain
+    runs-on: ubuntu-latest
+    needs:
+      - builder
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Cache build dependencies
+        uses: actions/cache@v2
+        with:
+          path: container/vbcc/cache
+          key: ${{ runner.os }}-vbcc-${{ hashFiles('**/Makefile') }}
+          restore-keys: |
+            ${{ runner.os }}-vbcc-
+            ${{ runner.os }}-
+
+      - name: Login to GitHub Registry
+        uses: docker/login-action@v1
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+
+      - name: Build container
+        run: make vbcc-xdk-container
+
+      - name: Push container to registry
+        run: make push-vbcc-xdk-container
+
   toolchain:
     name: Tool Chain
     runs-on: ubuntu-latest
     needs:
       - binutils
       - llvm
+      - vbcc
 
     steps:
       - name: Checkout repo

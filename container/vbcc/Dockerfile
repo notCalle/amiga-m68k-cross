@@ -1,8 +1,12 @@
 ARG IMAGE_TAG_PREFIX
 ARG IMAGE_TAG_SUFFIX=latest
-FROM ${IMAGE_TAG_PREFIX}/binutils:${IMAGE_TAG_SUFFIX} AS binutils
-FROM ${IMAGE_TAG_PREFIX}/llvm:${IMAGE_TAG_SUFFIX} AS llvm
-FROM ${IMAGE_TAG_PREFIX}/vbcc-xdk:${IMAGE_TAG_SUFFIX} AS vbcc
+FROM ${IMAGE_TAG_PREFIX}/builder:${IMAGE_TAG_SUFFIX} AS builder
+ARG PREFIX=/opt/amiga
+
+ADD . /build
+WORKDIR /build
+
+RUN make LHA_OPTS=fq PREFIX=${PREFIX} install
 
 FROM ubuntu
 ARG PREFIX=/opt/amiga
@@ -11,8 +15,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y \
+        curl\
         file \
         git \
+        lhasa \
         make \
         tmux \
         vim \
@@ -27,12 +33,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         --user-group \
         amiga
 
-COPY --from=binutils ${PREFIX}/. ${PREFIX}/
-COPY --from=llvm ${PREFIX}/. ${PREFIX}/
-COPY --from=vbcc ${PREFIX}/. ${PREFIX}/
-
 USER amiga
-WORKDIR /opt/amiga
-ENV HOME=/opt/amiga \
-    PATH=/opt/amiga/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-    SHELL=/bin/bash
+WORKDIR ${PREFIX}
+ENV CC="vc -c99" \
+    HOME=${PREFIX} \
+    PATH=${PREFIX}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    SHELL=/bin/bash \
+    VBCC=${PREFIX}/vbcc
+
+COPY --from=builder ${PREFIX}/. ${PREFIX}/

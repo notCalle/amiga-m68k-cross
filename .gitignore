@@ -1,1 +1,7 @@
 /build
+container/vbcc/cache
+container/vbcc/config
+container/vbcc/NDK_3.9
+container/vbcc/PosixLib
+container/vbcc/v*
+container/vbcc/*.info
