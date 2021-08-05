@@ -4,3 +4,7 @@
 [submodule "deps/M680x0-mono-repo"]
 	path = deps/M680x0-mono-repo
 	url = https://github.com/M680x0/M680x0-mono-repo.git
+[submodule "deps/llvm-project"]
+	path = deps/llvm-project
+	url = https://github.com/llvm/llvm-project.git
+	branch = release/13.x

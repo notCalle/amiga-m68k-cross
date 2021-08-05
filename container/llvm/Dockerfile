@@ -5,10 +5,10 @@ ARG PREFIX=/opt/amiga
 ARG NINJA_FLAGS
 
 RUN git clone \
-        --branch master \
+        --branch release/13.x \
         --depth 1 \
-        https://github.com/M680x0/M680x0-mono-repo.git \
-        /build/deps/M680x0-mono-repo
+        https://github.com/llvm/llvm-project.git \
+        /build/deps/llvm-project
 
 
 ADD . /build

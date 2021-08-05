@@ -62,7 +62,7 @@ build-clang: build/llvm/build.ninja
 	ninja $(NINJA_FLAGS) -C build/llvm clang
 
 build/llvm/build.ninja: build/llvm
-	cmake -G Ninja -B build/llvm -S deps/M680x0-mono-repo/llvm \
+	cmake -G Ninja -B build/llvm -S deps/llvm-project/llvm \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=$(PREFIX) \
 		-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra' \
