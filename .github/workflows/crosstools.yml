@@ -22,13 +22,21 @@ jobs:
             binutils:
               - '.github/workflows/crosstools.yml'
               - 'Makefile'
+              - 'mk/binutils.mk'
               - 'builder/**'
               - 'binutils/**'
             llvm:
               - '.github/workflows/crosstools.yml'
               - 'Makefile'
+              - 'mk/llvm.mk'
               - 'builder/**'
               - 'llvm/**'
+            vbcc:
+              - '.github/workflows/crosstools.yml'
+              - 'Makefile'
+              - 'mk/vbcc.mk'
+              - 'builder/**'
+              - 'vbcc/**'
     outputs:
       binutils: ${{ steps.filter.outputs.binutils }}
       llvm: ${{ steps.filter.outputs.llvm }}
@@ -119,9 +127,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+        if: needs.changes.outputs.vbcc == 'true'
 
       - name: Cache build dependencies
         uses: actions/cache@v2
+        if: needs.changes.outputs.vbcc == 'true'
         with:
           path: container/vbcc/cache
           key: ${{ runner.os }}-vbcc-${{ hashFiles('**/Makefile') }}
@@ -131,15 +141,18 @@ jobs:
 
       - name: Login to GitHub Registry
         uses: docker/login-action@v1
+        if: needs.changes.outputs.vbcc == 'true'
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
 
       - name: Build container
+        if: needs.changes.outputs.vbcc == 'true'
         run: make vbcc-xdk-container
 
       - name: Push container to registry
+        if: needs.changes.outputs.vbcc == 'true'
         run: make push-vbcc-xdk-container
 
   toolchain:
