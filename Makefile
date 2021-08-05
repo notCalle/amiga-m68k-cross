@@ -66,7 +66,7 @@ build/llvm/build.ninja: build/llvm
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=$(PREFIX) \
 		-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra' \
-		-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='M680x0' \
+		-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='M68k' \
 		-DLLVM_TARGETS_TO_BUILD='' \
 
 build/llvm:
