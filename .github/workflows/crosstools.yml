@@ -9,7 +9,7 @@ on:
       - '*'
 
 env:
-  IMAGE_TAG_PREFIX: docker.pkg.github.com/notcalle/amiga-m68k-cross
+  IMAGE_TAG_PREFIX: ghcr.io/notcalle/amiga-m68k-cross
 
 jobs:
   changes:
@@ -49,7 +49,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.actor }}
 
       - name: Build container
@@ -75,7 +75,7 @@ jobs:
         if: needs.changes.outputs.binutils == 'true'
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.actor }}
 
       - name: Build container
@@ -103,7 +103,7 @@ jobs:
         if: needs.changes.outputs.llvm == 'true'
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.actor }}
 
       - name: Build container
@@ -137,7 +137,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.actor }}
 
       - name: Build container
@@ -162,7 +162,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.actor }}
 
       - name: Build container
