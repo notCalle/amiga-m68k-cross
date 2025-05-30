@@ -1,6 +1,6 @@
 PREFIX ?= $(HOME)/.local/amiga-m68k-cross
 TARGET ?= m68k-amiga-elf
-IMAGE_TAG_PREFIX ?= docker.pkg.github.com/notcalle/amiga-m68k-cross
+IMAGE_TAG_PREFIX ?= $(error specify IMAGE_TAG_PREFIX)
 
 .PHONY: build
 build: build-binutils build-llvm build-vbcc
